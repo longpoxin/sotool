@@ -3,6 +3,11 @@
 
 #include <unistd.h>
 
+typedef unsigned int u32_t;
+typedef unsigned short u16_t;
+typedef char u8_t;
+
+#define DT_NULL 0
 #define DT_NEEDED 1
 #define DT_PLTRELSZ 2
 #define DT_PLTGOT 3
@@ -31,7 +36,23 @@
 #define DT_DEBUG 21
 #define DT_TEXTREL 22
 #define DT_JMPREL 23
+
+#define DT_INIT_ARRAY 25
+#define DT_FINI_ARRAY 26
+#define DT_INIT_ARRAYSZ 27
+#define DT_FINI_ARRAYSZ 28
+
 #define DT_ENCODING 32
+
+#define PT_LOAD 1
+#define PT_DYNAMIC 2 
+
+ #define ELF32_R_SYM(x) ((x) >> 8)
+#define ELF32_R_TYPE(x) ((x) & 0xff)
+
+#define ELF32_ST_BIND(i) ((i)>>4)
+#define ELF32_ST_TYPE(i) ((i)&0xf)
+#define ELF32_ST_INFO(b,t) (((b)<<4)+((t)&0xf))
 
 typedef struct {
     u8_t  ident[16];    /* The first 4 bytes are the ELF magic */
@@ -71,7 +92,7 @@ typedef struct {
     u8_t info;
     u8_t other;
     u16_t shndx;
-} elf_sym_t;
+} elf32_sym_t;
 
 typedef struct {
     u32_t d_tag;
